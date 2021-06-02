@@ -90,7 +90,7 @@ final class ViewController: UIViewController {
         }
     }
     
-    
+    // Action to tap on "=" button
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard expressionIsCorrect else {
             let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
@@ -122,16 +122,20 @@ final class ViewController: UIViewController {
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
+            operationsToReduce.insert("\(calculator.clearResult(number: result))", at: 0)
         }
         
         textView.text.append(" = \(operationsToReduce.first!)")
     }
     
 
-    
-    
     // MARK: - Functions
+    
+    private func alertUser(message : String) -> UIAlertController{
+        let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        return alertVC
+    }
     
     // Error check computed variables
     var expressionIsCorrect: Bool {
@@ -153,5 +157,7 @@ final class ViewController: UIViewController {
     var elements: [String] {
         return textView.text.split(separator: " ").map { "\($0)" }
     }
+    
+    
     
 }

@@ -252,7 +252,6 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="calculationOperationButtons:" destination="eqK-jh-KKu" eventType="touchUpInside" id="9ei-hb-Qad"/>
                                             <action selector="tappedDivisionButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="Ba0-OR-FWP"/>
                                         </connections>
                                     </button>
