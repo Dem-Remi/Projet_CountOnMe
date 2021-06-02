@@ -17,6 +17,8 @@ final class ViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    private let calculator = Calculation()
+    
     // MARK: - Outlets
     
     // Calculation view
@@ -25,7 +27,15 @@ final class ViewController: UIViewController {
     // Table of number buttons
     @IBOutlet var numberButtons: [UIButton]!
     
+
     // MARK: - Actions
+    
+    // A/C button to reset
+    @IBAction func ACButton(_ sender: UIButton) {
+        textView.text = ""
+    }
+    
+    // Action to tap on number buttons
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
@@ -36,6 +46,7 @@ final class ViewController: UIViewController {
         textView.text.append(numberText)
     }
     
+    // Action to tap on "+" button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if canAddOperator {
             textView.text.append(" + ")
@@ -46,6 +57,7 @@ final class ViewController: UIViewController {
         }
     }
     
+    // Action to tap on "-" button
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
         if canAddOperator {
             textView.text.append(" - ")
@@ -55,6 +67,29 @@ final class ViewController: UIViewController {
             self.present(alertVC, animated: true, completion: nil)
         }
     }
+    
+    // Action to tap on "x" button
+    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
+        if canAddOperator {
+            textView.text.append(" x ")
+        } else {
+            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
+    
+    // Action to tap on "÷" button
+    @IBAction func tappedDivisionButton(_ sender: UIButton) {
+        if canAddOperator {
+            textView.text.append(" ÷ ")
+        } else {
+            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertVC, animated: true, completion: nil)
+        }
+    }
+    
     
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard expressionIsCorrect else {
@@ -73,14 +108,16 @@ final class ViewController: UIViewController {
         
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
+            let left = Double(operationsToReduce[0])!
             let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
+            let right = Double(operationsToReduce[2])!
             
-            let result: Int
+            let result: Double
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
+            case "x" : result = left * right
+            case "÷" : result = left / right
             default: fatalError("Unknown operator !")
             }
             
@@ -91,19 +128,14 @@ final class ViewController: UIViewController {
         textView.text.append(" = \(operationsToReduce.first!)")
     }
     
+
+    
+    
     // MARK: - Functions
-    
-    /// Action button AC
-    @IBAction func cancelButtonAC(_ sender: UIButton) {
-        textView.text = ""
-    }
-    
-    
-    
     
     // Error check computed variables
     var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "÷"
     }
     
     var expressionHaveEnoughElement: Bool {
@@ -111,7 +143,7 @@ final class ViewController: UIViewController {
     }
     
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "÷"
     }
     
     var expressionHaveResult: Bool {
@@ -121,4 +153,5 @@ final class ViewController: UIViewController {
     var elements: [String] {
         return textView.text.split(separator: " ").map { "\($0)" }
     }
+    
 }

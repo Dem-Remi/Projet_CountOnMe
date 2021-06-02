@@ -201,8 +201,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 </variation>
                                                 <connections>
-                                                    <action selector="cancelButtonAC:" destination="eqK-jh-KKu" eventType="touchUpInside" id="dgQ-VN-U6b"/>
-                                                    <action selector="tappedNumberButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="j5j-fz-sBI"/>
+                                                    <action selector="ACButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="hw2-1q-USu"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -241,6 +240,9 @@
                                         <state key="normal" title="x">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="tappedMultiplicationButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="CA2-1Z-4oz"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="08j-yV-e5E">
                                         <rect key="frame" x="233.5" y="0.0" width="62.5" height="60"/>
@@ -251,6 +253,7 @@
                                         </state>
                                         <connections>
                                             <action selector="calculationOperationButtons:" destination="eqK-jh-KKu" eventType="touchUpInside" id="9ei-hb-Qad"/>
+                                            <action selector="tappedDivisionButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="Ba0-OR-FWP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMj-Of-bCU">
