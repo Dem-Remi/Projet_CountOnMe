@@ -22,5 +22,10 @@ class Calculation {
         let result = Int(number)
         return "\(result)"
     }
+    
+    //MARK: - Test Phase
+    
+
+    
 }
 

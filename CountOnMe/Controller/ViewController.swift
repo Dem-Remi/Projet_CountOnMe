@@ -27,13 +27,31 @@ final class ViewController: UIViewController {
     // Table of number buttons
     @IBOutlet var numberButtons: [UIButton]!
     
-
+    
     // MARK: - Actions
     
-    // A/C button to reset
+    // Tap on the AC button to remove the last character
     @IBAction func ACButton(_ sender: UIButton) {
-        textView.text = ""
+        guard textView.text.first != nil else {
+            present(alertUser(message: "Il n'y a pas d'élement à effacer"), animated: true, completion: nil)
+            return
+        }
+        guard !expressionHaveResult else {
+            textView.text.removeAll()
+            return
+        }
+        var text = Array(textView.text)
+        text.remove(at: textView.text.count - 1)
+        textView.text = String(text)
     }
+    
+    // Long press on the AC button to remove all the characters
+    @IBAction func longPressACButton(_ sender: UILongPressGestureRecognizer) {
+        textView.text.removeAll()
+    }
+    
+    
+    
     
     // Action to tap on number buttons
     @IBAction func tappedNumberButton(_ sender: UIButton) {
@@ -128,7 +146,7 @@ final class ViewController: UIViewController {
         textView.text.append(" = \(operationsToReduce.first!)")
     }
     
-
+    
     // MARK: - Functions
     
     private func alertUser(message : String) -> UIAlertController{
@@ -157,6 +175,7 @@ final class ViewController: UIViewController {
     var elements: [String] {
         return textView.text.split(separator: " ").map { "\($0)" }
     }
+    
     
     
     

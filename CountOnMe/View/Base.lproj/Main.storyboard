@@ -193,6 +193,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ge7-lq-zzE" userLabel="A/C">
                                                 <rect key="frame" x="0.0" y="162" width="102" height="44"/>
                                                 <color key="backgroundColor" red="0.60392156860000001" green="0.57647058819999997" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <gestureRecognizers/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                                 <state key="normal" title="A/C">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -202,6 +203,7 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="ACButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="hw2-1q-USu"/>
+                                                    <outletCollection property="gestureRecognizers" destination="gsd-X7-ZMv" appends="YES" id="TfX-fE-XSV"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -318,6 +320,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7XP-3c-sJZ" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="gsd-X7-ZMv">
+                    <connections>
+                        <action selector="longPressACButton:" destination="eqK-jh-KKu" id="dV2-Qr-so3"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="87" y="220"/>
         </scene>
