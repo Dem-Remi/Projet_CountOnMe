@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  SimpleCalc
-//
-//  Created by Vincent Saluzzo on 29/03/2019.
-//  Copyright © 2019 Vincent Saluzzo. All rights reserved.
-//
-
 import UIKit
 
 final class ViewController: UIViewController {
@@ -17,7 +9,7 @@ final class ViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
-    private let calculator = Calculation()
+    let calcul = Calcul()
     
     // MARK: - Outlets
     
@@ -30,153 +22,157 @@ final class ViewController: UIViewController {
     
     // MARK: - Actions
     
+    @IBAction func tappedPointButton(_ sender: UIButton) {
+        do {
+            try calcul.addAPoint()
+            textView.text = calcul.textToDisplay
+        } catch CalculError.cannotAddAPoint {
+            cannotAddAPointError()
+        } catch {
+        }
+    }
+    
     // Tap on the AC button to remove the last character
     @IBAction func ACButton(_ sender: UIButton) {
         guard textView.text.first != nil else {
-            present(alertUser(message: "Il n'y a pas d'élement à effacer"), animated: true, completion: nil)
+            nothingToRemoveError()
             return
         }
-        guard !expressionHaveResult else {
-            textView.text.removeAll()
+        guard !calcul.expressionHaveResult else {
+            calcul.deleteAll()
+            textView.text = calcul.textToDisplay
             return
         }
-        var text = Array(textView.text)
-        text.remove(at: textView.text.count - 1)
-        textView.text = String(text)
+        calcul.deleteTheLast()
+        textView.text = calcul.textToDisplay
     }
     
     // Long press on the AC button to remove all the characters
     @IBAction func longPressACButton(_ sender: UILongPressGestureRecognizer) {
-        textView.text.removeAll()
+        calcul.deleteAll()
+        textView.text = calcul.textToDisplay
     }
-    
-    
-    
     
     // Action to tap on number buttons
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
-        if expressionHaveResult {
-            textView.text = ""
-        }
-        textView.text.append(numberText)
+        calcul.addNumber(numberText)
+        textView.text = calcul.textToDisplay
     }
     
     // Action to tap on "+" button
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if canAddOperator {
-            textView.text.append(" + ")
-        } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+        do {
+            try calcul.addAdditionOperator()
+            textView.text = calcul.textToDisplay
+        } catch CalculError.cannotAddOperator {
+            cannotAddOperatorError()
+        } catch {
         }
     }
+
     
     // Action to tap on "-" button
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        if canAddOperator {
-            textView.text.append(" - ")
-        } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+        do {
+            try calcul.addSubstractionOperator()
+            textView.text = calcul.textToDisplay
+        } catch CalculError.cannotAddOperator {
+            cannotAddOperatorError()
+        } catch {
         }
     }
+
     
     // Action to tap on "x" button
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        if canAddOperator {
-            textView.text.append(" x ")
-        } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+        if calcul.canAddOperator {
+            do {
+                try calcul.addMultiplicationOperator()
+                textView.text = calcul.textToDisplay
+            } catch CalculError.cannotAddOperator {
+                cannotAddOperatorError()
+            } catch {
+            }
         }
     }
+
     
     // Action to tap on "÷" button
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        if canAddOperator {
-            textView.text.append(" ÷ ")
-        } else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un operateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
+        if calcul.canAddOperator {
+            do {
+                try calcul.addDivisionOperator()
+                textView.text = calcul.textToDisplay
+            } catch CalculError.cannotAddOperator {
+                cannotAddOperatorError()
+            } catch {
+            }
         }
     }
+
     
     // Action to tap on "=" button
-    @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard expressionIsCorrect else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-        }
-        guard expressionHaveEnoughElement else {
-            let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-        }
-        
-        // Create local copy of operations
-        var operationsToReduce = elements
-        
-        // Iterate over operations while an operand still here
-        while operationsToReduce.count > 1 {
-            let left = Double(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Double(operationsToReduce[2])!
+    @IBAction func tappedEqualButton(_ sender: Any) {
+        do {
+            try calcul.calculate()
+            textView.text = calcul.textToDisplay
+        } catch CalculError.expressionNotCorrect {
+            expressionNotCorrectError()
+        } catch CalculError.expressionNotEnoughtLong {
+            expressionNotEnoughtLongError()
+        } catch CalculError.divideByZero {
+            divisionByZeroError()
+        } catch CalculError.unknownOperator {
+            unknownOperatorError()
             
-            let result: Double
-            switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            case "x" : result = left * right
-            case "÷" : result = left / right
-            default: fatalError("Unknown operator !")
-            }
-            
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(calculator.clearResult(number: result))", at: 0)
+        //🟠 Function under construction 🟠
+        } catch CalculError.startByAnOperator {
+            startByAnOperatorError()
+
+        } catch {
         }
-        
-        textView.text.append(" = \(operationsToReduce.first!)")
     }
     
+    // MARK: - Error messages
     
-    // MARK: - Functions
-    
-    private func alertUser(message : String) -> UIAlertController{
-        let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
+    private func alertUser(title : String, message: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return alertVC
+        self.present(alertVC, animated: true, completion: nil)
     }
     
-    // Error check computed variables
-    var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "÷"
+    func divisionByZeroError() {
+        alertUser(title: "Alerte", message: "Division par zéro impossible.")
     }
     
-    var expressionHaveEnoughElement: Bool {
-        return elements.count >= 3
+    func unknownOperatorError() {
+        alertUser(title: "Alerte", message: "Opérateur inconnu.")
     }
     
-    var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "÷"
+    func cannotAddAPointError() {
+        alertUser(title: "Alerte", message: "Impossible d'ajouter une virgule.")
     }
     
-    var expressionHaveResult: Bool {
-        return textView.text.firstIndex(of: "=") != nil
+    func expressionNotEnoughtLongError() {
+        alertUser(title: "Alerte", message: "Démarrez un nouveau calcul.")
     }
     
-    var elements: [String] {
-        return textView.text.split(separator: " ").map { "\($0)" }
+    func expressionNotCorrectError() {
+        alertUser(title: "Alerte", message: "Entrez une expression correcte.")
     }
     
+    func cannotAddOperatorError() {
+        alertUser(title: "Alerte", message: "Un opérateur est déjà en place.")
+    }
     
+    func nothingToRemoveError() {
+        alertUser(title: "Alerte", message: "Il n'y a pas d'élement à effacer.")
+    }
     
-    
+    func startByAnOperatorError() {
+        alertUser(title: "Alerte", message: "Démarrez le calcul par un chiffre.")
+    }
 }
