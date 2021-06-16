@@ -125,8 +125,8 @@ final class ViewController: UIViewController {
             expressionNotEnoughtLongError()
         } catch CalculError.divideByZero {
             divisionByZeroError()
-        } catch CalculError.unknownOperator {
-            unknownOperatorError()
+//        } catch CalculError.unknownOperator {
+//            unknownOperatorError()
             
         //🟠 Function under construction 🟠
         } catch CalculError.startByAnOperator {
