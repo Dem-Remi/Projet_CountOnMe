@@ -45,17 +45,17 @@ class SimpleCalcTests: XCTestCase {
         XCTAssertEqual(newCalcul.textToDisplay, "9 - ")
     }
     
-        func testGiven10IsDisplay_WhenTheMultiplyIsChoosed_ThenMultiplyIsAddToDisplay() throws {
-            newCalcul.addNumber("10")
-            try newCalcul.addMultiplicationOperator()
-            XCTAssertEqual(newCalcul.textToDisplay, "10 x ")
-        }
+    func testGiven10IsDisplay_WhenTheMultiplyIsChoosed_ThenMultiplyIsAddToDisplay() throws {
+        newCalcul.addNumber("10")
+        try newCalcul.addMultiplicationOperator()
+        XCTAssertEqual(newCalcul.textToDisplay, "10 x ")
+    }
     
-        func testGiven0IsDisplay_WhenTheDivideIsChoosed_ThenDivideIsAddToDisplay() throws {
-            newCalcul.addNumber("0")
-            try newCalcul.addDivisionOperator()
-            XCTAssertEqual(newCalcul.textToDisplay, "0 ÷ ")
-        }
+    func testGiven0IsDisplay_WhenTheDivideIsChoosed_ThenDivideIsAddToDisplay() throws {
+        newCalcul.addNumber("0")
+        try newCalcul.addDivisionOperator()
+        XCTAssertEqual(newCalcul.textToDisplay, "0 ÷ ")
+    }
     
     
     //MARK: - Basic calculations
@@ -166,10 +166,20 @@ class SimpleCalcTests: XCTestCase {
         XCTAssertNoThrow(try newCalcul.addDivisionOperator())
         newCalcul.addNumber("2")
         XCTAssertNoThrow(try newCalcul.calculate())
-//        try newCalcul.alreadyDecimalNumber()
-        XCTAssertNoThrow(try newCalcul.alreadyDecimalNumber())
-        XCTAssertEqual(newCalcul.textToDisplay, "1 ÷ 2 = 0.5")
+        XCTAssertNoThrow(newCalcul.alreadyDecimalNumber())
     }
+    
+    func testGiven2Divide2IsDisplay_WhenTheEqualIsChoosen_Then1IsDisplay() throws {
+        newCalcul.addNumber("2")
+        XCTAssertNoThrow(try newCalcul.addAdditionOperator())
+        newCalcul.addNumber("2")
+        XCTAssertEqual(newCalcul.alreadyDecimalNumber(), false)
+    }
+    
+    func testGivenNothingIsDisplay_WhenTheEqualIsChoosen_ThenNothingIsDisplay() throws {
+        XCTAssertEqual(newCalcul.alreadyDecimalNumber(), false)
+    }
+    
     
     
     //MARK: - To delete
@@ -179,7 +189,7 @@ class SimpleCalcTests: XCTestCase {
         newCalcul.addNumber("2")
         XCTAssertNoThrow(try newCalcul.addAdditionOperator())
         newCalcul.addNumber("1")
-        try newCalcul.deleteTheLast()
+        newCalcul.deleteTheLast()
         XCTAssertEqual(newCalcul.textToDisplay, "2 + ")
     }
     
@@ -188,7 +198,7 @@ class SimpleCalcTests: XCTestCase {
         newCalcul.addNumber("2")
         XCTAssertNoThrow(try newCalcul.addAdditionOperator())
         newCalcul.addNumber("1")
-        try newCalcul.deleteAll()
+        newCalcul.deleteAll()
         XCTAssertEqual(newCalcul.textToDisplay, "")
     }
     
@@ -205,7 +215,7 @@ class SimpleCalcTests: XCTestCase {
     
     
     //MARK: - Test
-
+    
     
     func testGiven1Plus2Equal3IsDisplay_When5IsChoosed_Then5IsDisplay() throws {
         newCalcul.addNumber("1")
@@ -335,6 +345,8 @@ class SimpleCalcTests: XCTestCase {
         })
         XCTAssertEqual(newCalcul.textToDisplay, "1 + 1 = 2")
     }
+    
+    
     
     // Start By An Operator +
     func testGivenPlus1IsDisplay_WhenTheEqualIsChoosed_ThenErrorStartByAnOperatorIsSend() throws {

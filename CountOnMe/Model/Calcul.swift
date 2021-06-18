@@ -55,22 +55,22 @@ class Calcul {
     
     // This method adds a plus sign to the current calculation.
     func addAdditionOperator() throws {
-            try addAnOperator(operatorAsString: "+")
+        try addAnOperator(operatorAsString: "+")
     }
     
     // This method adds a minus sign to the current calculation.
     func addSubstractionOperator() throws {
-            try addAnOperator(operatorAsString: "-")
+        try addAnOperator(operatorAsString: "-")
     }
     
     // This method adds a multiply sign to the current calculation.
     func addMultiplicationOperator() throws {
-            try addAnOperator(operatorAsString: "x")
+        try addAnOperator(operatorAsString: "x")
     }
     
     // This method adds a divide sign to the current calculation.
     func addDivisionOperator() throws {
-            try addAnOperator(operatorAsString: "÷")
+        try addAnOperator(operatorAsString: "÷")
     }
     
     
@@ -88,15 +88,14 @@ class Calcul {
     }
     
     // Check if it's already a comma.
-     func alreadyDecimalNumber() -> Bool {
+    func alreadyDecimalNumber() -> Bool {
         guard let lastElement = elements.last else {
             return false
         }
         if lastElement.contains(".") {
             return true
-        } else {
-            return false
         }
+        return false
     }
     
     
@@ -122,15 +121,14 @@ class Calcul {
     
     
     // Check if the last character is already a point.
-    private func hasAlreadyAPoint() -> Bool {
+    func hasAlreadyAPoint() -> Bool {
         guard let lastElement = elements.last else {
             return false
         }
         if lastElement.contains(".") {
             return true
-        } else {
-            return false
         }
+        return false
     }
     
     
